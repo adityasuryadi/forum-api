@@ -1,0 +1,50 @@
+version: "3.9"
+services:
+  ### ===================
+  ### APP SERVICE
+  ### ===================
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: node_service
+    command: sh -c "npm run migrate up && npm start" 
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+    env_file:
+      - .env
+###=======================
+### POSTGRES SERVICE
+###======================
+  postgres:
+    build:
+      dockerfile: postgres.Dockerfile
+      context: .
+    container_name: postgres_service
+    ports:
+      - 5433:${PGPORT}
+    networks:
+      - app_network
+    environment:
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env
+      # - type: bind
+      #   source: ./docker/postgres
+      #   target: /var/lib/postgresql/data
+  
+networks:
+  app_network:
+    driver: bridge
+volumes:
+  pgdata:
+    
+
+      
