@@ -105,7 +105,7 @@ describe('GetThreadUseCase', () => {
           id: 'comment-123',
           username: 'johndoe',
           date: '2021-08-08T07:22:33.555Z',
-          content: '**komentar telah dihapus**',
+          content: 'sebuah comment gagal',
         }],
       },
     });
